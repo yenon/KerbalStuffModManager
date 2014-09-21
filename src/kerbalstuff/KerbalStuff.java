@@ -5,6 +5,7 @@
  */
 package kerbalstuff;
 
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
@@ -74,11 +75,20 @@ public class KerbalStuff {
         }
     }
 
-    private InputStreamReader download(String site) {
+    private String download(String site) {
         try {
+            String line,out="";
             URL url = new URL(site);
             URLConnection con = url.openConnection();
-            return new InputStreamReader(con.getInputStream());
+            BufferedReader br = new BufferedReader(new InputStreamReader(con.getInputStream()));
+            while((line=br.readLine())!=null){
+                if(out==""){
+                    out=line;
+                }else{
+                    out=out+"\n"+line;
+                }
+            }
+            return out;
         } catch (IOException ex) {
             Logger.getLogger(KerbalStuff.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -94,8 +104,12 @@ public class KerbalStuff {
             long starttimefetch = System.currentTimeMillis();
             ScriptEngine se = new ScriptEngineManager().getEngineByName("JavaScript");
             ModVersion mv[];
-            JSObject version, current, main = (JSObject) se.eval(download("https://www.kerbalstuff.com/api/search/mod?query=" + URLEncoder.encode(mod, "UTF-8")));
-            System.out.println(System.currentTimeMillis() - starttimefetch);
+            String downloadString,title;
+            JSObject version, current, main;
+            downloadString=download("https://www.kerbalstuff.com/api/search/mod?query=" + URLEncoder.encode(mod, "UTF-8"));
+            title="KerbalStuffModManager (response time: "+String.valueOf(System.currentTimeMillis() - starttimefetch)+" ms";
+            main = (JSObject) se.eval(downloadString);
+            
             long starttimeparse = System.currentTimeMillis();
             int ilen = main.values().size(), i = 0, j, jlen;
             modlist = new Mod[ilen];
@@ -131,8 +145,8 @@ public class KerbalStuff {
                 System.out.println(i);
                 i++;
             }
-            System.out.println(System.currentTimeMillis() - starttimeparse);
-            System.out.println("ok");
+            title=title+" parsing time: "+String.valueOf(System.currentTimeMillis() - starttimeparse)+" ms)";
+            mf.setTitle(title);
         } catch (UnsupportedEncodingException ex) {
             Logger.getLogger(KerbalStuff.class.getName()).log(Level.SEVERE, null, ex);
         } catch (ScriptException ex) {

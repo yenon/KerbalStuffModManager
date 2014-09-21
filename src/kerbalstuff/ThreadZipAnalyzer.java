@@ -133,7 +133,7 @@ public class ThreadZipAnalyzer extends Thread {
     private File searchForKSPDirs(File dir) {
         Stack<File> s = new Stack();
         File files[];
-        int j, i = 0;
+        int j, i;
         s.add(dir);
         while (!s.empty()) {
             files = s.pop().listFiles();
@@ -247,22 +247,22 @@ public class ThreadZipAnalyzer extends Thread {
             File dir = searchForKSPDirs(new File(modDir));
             //Search for Gamefolders
             if (dir != null) {
+                //Install the "good" way
                 DirectoryFilter df = new DirectoryFilter();
                 df.setKSPDirs(kspDirFolders);
                 File[] relevantFolders = dir.listFiles(df);
                 i = 0;
-                //Copy Gamefolders
-                System.out.println("OK");
-                System.out.println(dir.getAbsolutePath());
+                fl.setIdle(false);
+                fl.setDownloadText("Copying Files");
                 while (i < relevantFolders.length) {
-                    System.out.println("Copying " + relevantFolders[i].getName());
-                    System.out.println(relevantFolders[i].getAbsolutePath());
+                    fl.setStatusbarValue((i+1)/relevantFolders.length,relevantFolders[i].getName());
                     copyDir(relevantFolders[i], new File(kspDir + "/" + relevantFolders[i].getName()));
                     i++;
                 }
                 cleanupModuleManager();
                 tdm.unpackingFinished(createdDirs);
             } else {
+                //Show "bad" install dialog
                 if (JOptionPane.showConfirmDialog(fl, "Could not find any KSP directories in zip file, try to install everything in gamedata?", "Error!", JOptionPane.ERROR_MESSAGE) == JOptionPane.OK_OPTION) {
                     copyDir(new File(modDir),new File(kspDir+"/GameData"));
                     cleanupModuleManager();

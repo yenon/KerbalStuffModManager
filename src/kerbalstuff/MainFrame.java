@@ -53,8 +53,10 @@ public class MainFrame extends javax.swing.JFrame {
         jButton3 = new javax.swing.JButton();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu3 = new javax.swing.JMenu();
-        jMenuItem1 = new javax.swing.JMenuItem();
         jMenuItem2 = new javax.swing.JMenuItem();
+        jMenu1 = new javax.swing.JMenu();
+        jMenuItem1 = new javax.swing.JMenuItem();
+        jCheckBoxMenuItem1 = new javax.swing.JCheckBoxMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         addWindowListener(new java.awt.event.WindowAdapter() {
@@ -99,18 +101,31 @@ public class MainFrame extends javax.swing.JFrame {
 
         jMenu3.setText("File");
 
+        jMenuItem2.setText("Check for mod updates");
+        jMenu3.add(jMenuItem2);
+
+        jMenuBar1.add(jMenu3);
+
+        jMenu1.setText("Settings");
+
         jMenuItem1.setText("Set KSP directory");
         jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jMenuItem1ActionPerformed(evt);
             }
         });
-        jMenu3.add(jMenuItem1);
+        jMenu1.add(jMenuItem1);
 
-        jMenuItem2.setText("Check for mod updates");
-        jMenu3.add(jMenuItem2);
+        jCheckBoxMenuItem1.setSelected(true);
+        jCheckBoxMenuItem1.setText("Ignore Certificate of KerbalStuff.com");
+        jCheckBoxMenuItem1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jCheckBoxMenuItem1ActionPerformed(evt);
+            }
+        });
+        jMenu1.add(jCheckBoxMenuItem1);
 
-        jMenuBar1.add(jMenu3);
+        jMenuBar1.add(jMenu1);
 
         setJMenuBar(jMenuBar1);
 
@@ -164,6 +179,7 @@ public class MainFrame extends javax.swing.JFrame {
     private FrameLoading frameDownload;
     private String appDir, appHome = System.getProperty("user.home") + "/yenon/KerbalStuff", kspDir;
     Properties p;
+    boolean ignoreCertificate=false;
 
     public void modDownloadFinished() {
         frameDownload.dispose();
@@ -208,7 +224,8 @@ public class MainFrame extends javax.swing.JFrame {
                 setKSPDir();
             }
             appDir = p.getProperty("app_dir", appHome);
-
+            ignoreCertificate = Boolean.getBoolean(p.getProperty("ignore_certificate","false"));
+            jCheckBoxMenuItem1.setSelected(ignoreCertificate);
         } catch (FileNotFoundException ex) {
             Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IOException ex) {
@@ -253,7 +270,7 @@ public class MainFrame extends javax.swing.JFrame {
         jList1.setModel(new DefaultListModel());
         jList2.setModel(new DefaultListModel());
         jLabel1.setText("<html><h1>KerbalStuff ModManager</h1><br>by yenon</html>");
-        ks = new KerbalStuff(this);
+        ks = new KerbalStuff(this,ignoreCertificate);
         ks.searchMod(jTextField1.getText());
     }//GEN-LAST:event_jButton1ActionPerformed
 
@@ -346,6 +363,13 @@ public class MainFrame extends javax.swing.JFrame {
         setKSPDir();
     }//GEN-LAST:event_jMenuItem1ActionPerformed
 
+    private void jCheckBoxMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBoxMenuItem1ActionPerformed
+        ignoreCertificate=!ignoreCertificate;
+        jCheckBoxMenuItem1.setSelected(ignoreCertificate);
+        p.setProperty("ignore_certificate",String.valueOf(ignoreCertificate));
+        saveConfig();
+    }//GEN-LAST:event_jCheckBoxMenuItem1ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -385,10 +409,12 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
+    private javax.swing.JCheckBoxMenuItem jCheckBoxMenuItem1;
     private javax.swing.JFileChooser jFileChooser1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JList jList1;
     private javax.swing.JList jList2;
+    private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu3;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem jMenuItem1;

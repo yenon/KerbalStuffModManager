@@ -26,7 +26,6 @@ public class DirectoryFilter implements FileFilter {
         int i = 0;
         System.out.println(pathname.getName());
         while (!isKSPDir && i < ksp.length) {
-            
             isKSPDir = ksp[i].getName().equals(pathname.getName());
             i++;
         }

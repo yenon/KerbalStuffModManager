@@ -10,9 +10,12 @@ import java.io.FileFilter;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.FilenameFilter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.Enumeration;
 import java.util.Stack;
 import java.util.logging.Level;
@@ -114,9 +117,9 @@ public class ThreadZipAnalyzer extends Thread {
     }
 
     private void copyDir(File src, File loc) {
-        if (!new File(loc.getAbsolutePath() + "/" + src.getName()).isDirectory()) {
-            createdDirs.add(loc.getAbsolutePath() + "/" + src.getName());
-            new File(loc.getAbsolutePath() + "/" + src.getName()).mkdirs();
+        if(!loc.isDirectory()){
+            loc.mkdirs();
+            createdDirs.add(loc.getAbsolutePath());
         }
         int i = 0;
         File in[] = src.listFiles();
@@ -157,72 +160,14 @@ public class ThreadZipAnalyzer extends Thread {
 
     public void cleanupModuleManager() {
         int i = 0;
-        File[] moduleManager = new File(kspDir + "/GameData").listFiles(new FileFilter() {
+        String versionString[] = new File(kspDir + "/GameData").list(new FilenameFilter() {
             @Override
-            public boolean accept(File pathname) {
-                return pathname.getName().startsWith("ModuleManager") && pathname.getName().endsWith(".dll");
+            public boolean accept(File dir, String name) {
+                return name.startsWith("ModuleManager") && name.endsWith(".dll");
             }
         });
-        String versionString[];
-        int[] version, maxVersion = {0};
-        int j, v1, v2;
-        while (i < moduleManager.length) {
-            versionString = moduleManager[i].getName().replaceFirst("ModuleManager.", "").replaceFirst(".dll", "").split("\\.");
-            System.out.println(moduleManager[i].getName().replaceFirst("ModuleManager.", "").replaceFirst(".dll", ""));
-            version = new int[versionString.length];
-            j = 0;
-            System.out.println(versionString.length);
-            while (j < versionString.length) {
-                version[j] = Integer.parseInt(versionString[j]);
-                j++;
-            }
-            j = 0;
-            boolean done = false;
-            while ((j < version.length || j < maxVersion.length) && !done) {
-                if (j >= version.length) {
-                    v1 = 0;
-                } else {
-                    v1 = version[j];
-                }
-                if (j >= maxVersion.length) {
-                    v2 = 0;
-                } else {
-                    v2 = maxVersion[j];
-                }
-                System.out.println(v1);
-                System.out.println(v1);
-                if (v2 > v1) {
-                    done = true;
-                } else {
-                    if (v1 > v2) {
-                        maxVersion = version;
-                        done = true;
-                    }
-                }
-                j++;
-            }
-
-            i++;
-        }
-        j = 0;
-        String delMod = "";
-        while (j < maxVersion.length) {
-            if ("".equals(delMod)) {
-                delMod = String.valueOf(maxVersion[j]);
-            } else {
-                delMod = delMod + "." + maxVersion[j];
-            }
-            j++;
-        }
-        delMod = "ModuleManager." + delMod + ".dll";
-        System.out.println(delMod);
-        j = 0;
-        while (j < moduleManager.length) {
-            if (!moduleManager[j].getName().equals(delMod)) {
-                moduleManager[j].delete();
-            }
-            j++;
-        }
+        int max=Utilities.compareVersions(versionString);
+        System.out.println(versionString);
     }
 
     @Override
@@ -259,13 +204,13 @@ public class ThreadZipAnalyzer extends Thread {
                     copyDir(relevantFolders[i], new File(kspDir + "/" + relevantFolders[i].getName()));
                     i++;
                 }
-                cleanupModuleManager();
+                //cleanupModuleManager();
                 tdm.unpackingFinished(createdDirs);
             } else {
                 //Show "bad" install dialog
                 if (JOptionPane.showConfirmDialog(fl, "Could not find any KSP directories in zip file, try to install everything in gamedata?", "Error!", JOptionPane.ERROR_MESSAGE) == JOptionPane.OK_OPTION) {
                     copyDir(new File(modDir),new File(kspDir+"/GameData"));
-                    cleanupModuleManager();
+                    //cleanupModuleManager();
                     tdm.unpackingFinished(createdDirs);
                 }else{
                     tdm.clearCFG();

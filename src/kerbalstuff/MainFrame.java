@@ -180,7 +180,7 @@ public class MainFrame extends javax.swing.JFrame {
     private FrameLoading frameDownload;
     private String appDir, appHome = System.getProperty("user.home") + "/yenon/KerbalStuff", kspDir;
     Properties p;
-    boolean ignoreCertificate=false;
+    boolean ignoreCertificate = false;
 
     public void modDownloadFinished() {
         frameDownload.dispose();
@@ -225,7 +225,7 @@ public class MainFrame extends javax.swing.JFrame {
                 setKSPDir();
             }
             appDir = p.getProperty("app_dir", appHome);
-            ignoreCertificate = Boolean.getBoolean(p.getProperty("ignore_certificate","false"));
+            ignoreCertificate = Boolean.getBoolean(p.getProperty("ignore_certificate", "false"));
             jCheckBoxMenuItem1.setSelected(ignoreCertificate);
         } catch (FileNotFoundException ex) {
             Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
@@ -271,7 +271,7 @@ public class MainFrame extends javax.swing.JFrame {
         jList1.setModel(new DefaultListModel());
         jList2.setModel(new DefaultListModel());
         jLabel1.setText("<html><h1>KerbalStuff ModManager</h1><br>by yenon</html>");
-        ks = new KerbalStuff(this,ignoreCertificate);
+        ks = new KerbalStuff(this, ignoreCertificate);
         ks.searchMod(jTextField1.getText());
     }//GEN-LAST:event_jButton1ActionPerformed
 
@@ -337,12 +337,14 @@ public class MainFrame extends javax.swing.JFrame {
                     int i = 0, j;
                     while (i < delDirs.length) {
                         File[] files = new File(delDirs[i]).listFiles();
-                        j = 0;
-                        while (j < files.length) {
-                            if (files[j].isFile()) {
-                                files[j].delete();
+                        if (files != null) {
+                            j = 0;
+                            while (j < files.length) {
+                                if (files[j].isFile()) {
+                                    files[j].delete();
+                                }
+                                j++;
                             }
-                            j++;
                         }
                         i++;
                     }
@@ -365,9 +367,9 @@ public class MainFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenuItem1ActionPerformed
 
     private void jCheckBoxMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBoxMenuItem1ActionPerformed
-        ignoreCertificate=!ignoreCertificate;
+        ignoreCertificate = !ignoreCertificate;
         jCheckBoxMenuItem1.setSelected(ignoreCertificate);
-        p.setProperty("ignore_certificate",String.valueOf(ignoreCertificate));
+        p.setProperty("ignore_certificate", String.valueOf(ignoreCertificate));
         saveConfig();
     }//GEN-LAST:event_jCheckBoxMenuItem1ActionPerformed
 

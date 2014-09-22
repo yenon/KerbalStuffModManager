@@ -79,8 +79,8 @@ public class KerbalStuff {
         try {
             String line,out="";
             URL url = new URL(site);
-            URLConnection con = url.openConnection();
-            BufferedReader br = new BufferedReader(new InputStreamReader(con.getInputStream()));
+            System.out.println(url.toString());
+            BufferedReader br = new BufferedReader(new InputStreamReader(url.openStream()));
             while((line=br.readLine())!=null){
                 if(out==""){
                     out=line;

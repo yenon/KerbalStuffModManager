@@ -43,8 +43,8 @@ public class ThreadDownloadMod extends Thread {
         if (end) {
             try {
                 Properties modProps = new Properties();
-                if (new File(appDir + "/mods/" + mv.getName() + ".cfg").isFile()) {
-                    FileInputStream fis = new FileInputStream(new File(appDir + "/mods/" + mv.getName() + ".cfg"));
+                if (new File(appDir + "/modscfg/" + mv.getName() + ".cfg").isFile()) {
+                    FileInputStream fis = new FileInputStream(new File(appDir + "/modscfg/" + mv.getName() + ".cfg"));
                     modProps.load(fis);
                     fis.close();
                 }
@@ -59,7 +59,7 @@ public class ThreadDownloadMod extends Thread {
                 System.out.println(dirOut);
                 modProps.setProperty("dirs", dirOut);
 
-                FileOutputStream fos = new FileOutputStream(new File(appDir + "/mods/" + mv.getName() + ".cfg"));
+                FileOutputStream fos = new FileOutputStream(new File(appDir + "/modscfg/" + mv.getName() + ".cfg"));
                 modProps.store(fos, null);
                 fos.close();
             } catch (FileNotFoundException ex) {
@@ -76,7 +76,7 @@ public class ThreadDownloadMod extends Thread {
     }
     
     public void clearCFG(){
-        new File(appDir + "/mods/" + mv.getName() + ".cfg").delete();
+        new File(appDir + "/modscfg/" + mv.getName() + ".cfg").delete();
     }
     
     public ModVersion getModVersion() {

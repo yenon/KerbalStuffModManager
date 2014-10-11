@@ -24,12 +24,13 @@ public class Utilities {
             j=0;
             while(j<version.length()){
                 c=version.charAt(j);
-                if((c>47 && c>58) || c==46){
+                if((c>47 && c<58) || c==46){
                     versionConverted=versionConverted+c;
                 }
                 j++;
             }
-            versionSplitted=versionConverted.split(".");
+            System.out.println(versionConverted);
+            versionSplitted=versionConverted.split("\\.");
             versionNumbers[i]=new int[versionSplitted.length];
             j=0;
             while(j<versionSplitted.length){
@@ -49,7 +50,6 @@ public class Utilities {
                 }else{
                     b=-1;
                 }
-                b=versionNumbers[max][j];
                 if(a<b){
                     end=true;
                 }else{
@@ -60,6 +60,7 @@ public class Utilities {
                 }
                 j++;
             }
+            i++;
         }
         return max;
     }

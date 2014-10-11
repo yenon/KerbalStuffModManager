@@ -14,8 +14,6 @@ import java.io.FilenameFilter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.nio.file.Files;
-import java.nio.file.Path;
 import java.util.Enumeration;
 import java.util.Stack;
 import java.util.logging.Level;
@@ -43,7 +41,7 @@ public class ThreadZipAnalyzer extends Thread {
         kspDirFolders = new File(gamePath).listFiles(new FileFilter() {
             @Override
             public boolean accept(File pathname) {
-                return pathname.isDirectory()&&(!pathname.getName().equals("Plugins"));
+                return pathname.isDirectory() && (!pathname.getName().equals("Plugins"));
             }
         });
         this.modDir = modDir;
@@ -117,7 +115,7 @@ public class ThreadZipAnalyzer extends Thread {
     }
 
     private void copyDir(File src, File loc) {
-        if(!loc.isDirectory()){
+        if (!loc.isDirectory()) {
             loc.mkdirs();
             createdDirs.add(loc.getAbsolutePath());
         }
@@ -159,20 +157,24 @@ public class ThreadZipAnalyzer extends Thread {
     }
 
     public void cleanupModuleManager() {
-        int i = 0;
         String versionString[] = new File(kspDir + "/GameData").list(new FilenameFilter() {
             @Override
             public boolean accept(File dir, String name) {
                 return name.startsWith("ModuleManager") && name.endsWith(".dll");
             }
         });
-        int max=Utilities.compareVersions(versionString);
-        System.out.println(versionString);
+        int max = Utilities.compareVersions(versionString);
+        int i = 0;
+        while (i < versionString.length) {
+            if (i != max) {
+                new File(kspDir + "/GameData/" + versionString[i]).delete();
+            }
+            i++;
+        }
     }
 
     @Override
     public void run() {
-
         try {
             int i = 0, len = zf.size();
             //Unnzip file
@@ -200,19 +202,19 @@ public class ThreadZipAnalyzer extends Thread {
                 fl.setIdle(false);
                 fl.setDownloadText("Copying Files");
                 while (i < relevantFolders.length) {
-                    fl.setStatusbarValue((i+1)/relevantFolders.length,relevantFolders[i].getName());
+                    fl.setStatusbarValue((i + 1) / relevantFolders.length, relevantFolders[i].getName());
                     copyDir(relevantFolders[i], new File(kspDir + "/" + relevantFolders[i].getName()));
                     i++;
                 }
-                //cleanupModuleManager();
+                cleanupModuleManager();
                 tdm.unpackingFinished(createdDirs);
             } else {
                 //Show "bad" install dialog
                 if (JOptionPane.showConfirmDialog(fl, "Could not find any KSP directories in zip file, try to install everything in gamedata?", "Error!", JOptionPane.ERROR_MESSAGE) == JOptionPane.OK_OPTION) {
-                    copyDir(new File(modDir),new File(kspDir+"/GameData"));
+                    copyDir(new File(modDir), new File(kspDir + "/GameData"));
                     //cleanupModuleManager();
                     tdm.unpackingFinished(createdDirs);
-                }else{
+                } else {
                     tdm.clearCFG();
                     tdm.forceFinish();
                 }
@@ -220,6 +222,5 @@ public class ThreadZipAnalyzer extends Thread {
         } catch (IOException ex) {
             Logger.getLogger(ThreadZipAnalyzer.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
     }
 }

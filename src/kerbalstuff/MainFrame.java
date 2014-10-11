@@ -42,21 +42,24 @@ public class MainFrame extends javax.swing.JFrame {
 
         jFileChooser1 = new javax.swing.JFileChooser();
         jOptionPane1 = new javax.swing.JOptionPane();
-        jButton1 = new javax.swing.JButton();
-        jTextField1 = new javax.swing.JTextField();
+        BSearch = new javax.swing.JButton();
+        TFSearch = new javax.swing.JTextField();
         jScrollPane1 = new javax.swing.JScrollPane();
         jList1 = new javax.swing.JList();
-        jLabel1 = new javax.swing.JLabel();
+        LModDescription = new javax.swing.JLabel();
         jScrollPane3 = new javax.swing.JScrollPane();
         jList2 = new javax.swing.JList();
-        jButton2 = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
+        BDownload = new javax.swing.JButton();
+        BDelete = new javax.swing.JButton();
         jMenuBar1 = new javax.swing.JMenuBar();
-        jMenu3 = new javax.swing.JMenu();
+        MenuFile = new javax.swing.JMenu();
         jMenuItem2 = new javax.swing.JMenuItem();
-        jMenu1 = new javax.swing.JMenu();
+        MenuSettings = new javax.swing.JMenu();
+        ItemSetKSPDir = new javax.swing.JMenuItem();
+        ItemIgnoreCerticicate = new javax.swing.JCheckBoxMenuItem();
+        ItemDevTools = new javax.swing.JCheckBoxMenuItem();
+        MenuDevelopment = new javax.swing.JMenu();
         jMenuItem1 = new javax.swing.JMenuItem();
-        jCheckBoxMenuItem1 = new javax.swing.JCheckBoxMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("KerbalStuffModManager");
@@ -66,10 +69,10 @@ public class MainFrame extends javax.swing.JFrame {
             }
         });
 
-        jButton1.setText("Search");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        BSearch.setText("Search");
+        BSearch.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                BSearchActionPerformed(evt);
             }
         });
 
@@ -80,53 +83,77 @@ public class MainFrame extends javax.swing.JFrame {
         });
         jScrollPane1.setViewportView(jList1);
 
-        jLabel1.setText("<html><h1>KerbalStuff ModManager</h1><br>by yenon</html>");
-        jLabel1.setVerticalAlignment(javax.swing.SwingConstants.TOP);
+        LModDescription.setText("<html><h1>KerbalStuff ModManager</h1><br>by yenon</html>");
+        LModDescription.setVerticalAlignment(javax.swing.SwingConstants.TOP);
 
         jScrollPane3.setViewportView(jList2);
 
-        jButton2.setText("download selected version");
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
+        BDownload.setText("download selected version");
+        BDownload.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
+                BDownloadActionPerformed(evt);
             }
         });
 
-        jButton3.setText("Delete");
-        jButton3.setEnabled(false);
-        jButton3.addActionListener(new java.awt.event.ActionListener() {
+        BDelete.setText("Delete");
+        BDelete.setEnabled(false);
+        BDelete.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton3ActionPerformed(evt);
+                BDeleteActionPerformed(evt);
             }
         });
 
-        jMenu3.setText("File");
+        MenuFile.setText("File");
 
         jMenuItem2.setText("Check for mod updates");
-        jMenu3.add(jMenuItem2);
+        jMenuItem2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem2ActionPerformed(evt);
+            }
+        });
+        MenuFile.add(jMenuItem2);
 
-        jMenuBar1.add(jMenu3);
+        jMenuBar1.add(MenuFile);
 
-        jMenu1.setText("Settings");
+        MenuSettings.setText("Settings");
 
-        jMenuItem1.setText("Set KSP directory");
+        ItemSetKSPDir.setText("Set KSP directory");
+        ItemSetKSPDir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ItemSetKSPDirActionPerformed(evt);
+            }
+        });
+        MenuSettings.add(ItemSetKSPDir);
+
+        ItemIgnoreCerticicate.setText("Ignore certificate of KerbalStuff.com");
+        ItemIgnoreCerticicate.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ItemIgnoreCerticicateActionPerformed(evt);
+            }
+        });
+        MenuSettings.add(ItemIgnoreCerticicate);
+
+        ItemDevTools.setText("Enable developer tools");
+        ItemDevTools.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ItemDevToolsActionPerformed(evt);
+            }
+        });
+        MenuSettings.add(ItemDevTools);
+
+        jMenuBar1.add(MenuSettings);
+
+        MenuDevelopment.setText("Development");
+
+        jMenuItem1.setText("Test version checker");
         jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jMenuItem1ActionPerformed(evt);
             }
         });
-        jMenu1.add(jMenuItem1);
+        MenuDevelopment.add(jMenuItem1);
 
-        jCheckBoxMenuItem1.setSelected(true);
-        jCheckBoxMenuItem1.setText("Ignore Certificate of KerbalStuff.com");
-        jCheckBoxMenuItem1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jCheckBoxMenuItem1ActionPerformed(evt);
-            }
-        });
-        jMenu1.add(jCheckBoxMenuItem1);
-
-        jMenuBar1.add(jMenu1);
+        jMenuBar1.add(MenuDevelopment);
 
         setJMenuBar(jMenuBar1);
 
@@ -138,18 +165,18 @@ public class MainFrame extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(TFSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButton1))
+                        .addComponent(BSearch))
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 317, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(BDownload, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButton3))
-                    .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.TRAILING))
+                        .addComponent(BDelete))
+                    .addComponent(LModDescription, javax.swing.GroupLayout.Alignment.TRAILING))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -158,17 +185,17 @@ public class MainFrame extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 229, Short.MAX_VALUE)
+                        .addComponent(LModDescription, javax.swing.GroupLayout.DEFAULT_SIZE, 229, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jButton2)
-                            .addComponent(jButton3))
+                            .addComponent(BDownload)
+                            .addComponent(BDelete))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jButton1)
-                            .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(BSearch)
+                            .addComponent(TFSearch, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jScrollPane1)))
                 .addContainerGap())
@@ -186,7 +213,7 @@ public class MainFrame extends javax.swing.JFrame {
         frameDownload.dispose();
         int index = jList1.getSelectedIndex();
         if (index != -1) {
-            jButton3.setEnabled(new File(appDir + "/mods/" + ks.getMod(index).getName() + ".cfg").isFile());
+            BDelete.setEnabled(new File(appDir + "/modscfg/" + ks.getMod(index).getName() + ".cfg").isFile());
         }
     }
 
@@ -226,7 +253,7 @@ public class MainFrame extends javax.swing.JFrame {
             }
             appDir = p.getProperty("app_dir", appHome);
             ignoreCertificate = Boolean.getBoolean(p.getProperty("ignore_certificate", "false"));
-            jCheckBoxMenuItem1.setSelected(ignoreCertificate);
+            ItemIgnoreCerticicate.setSelected(ignoreCertificate);
         } catch (FileNotFoundException ex) {
             Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IOException ex) {
@@ -250,7 +277,7 @@ public class MainFrame extends javax.swing.JFrame {
                 + "by " + m.getAuthor() + " (Version " + m.getMv()[0].getFriendlyVersion() + " for KSP " + m.getMv()[0].getKspVersion() + ")<br>"
                 + "<h2>Description</h2>" + m.getShortDescription()
                 + "</html>";
-        jLabel1.setText(content);
+        LModDescription.setText(content);
         DefaultListModel dlm = new DefaultListModel();
         int i = 0;
         ModVersion v;
@@ -267,36 +294,36 @@ public class MainFrame extends javax.swing.JFrame {
         jList1.setModel(lm);
     }
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void BSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BSearchActionPerformed
         jList1.setModel(new DefaultListModel());
         jList2.setModel(new DefaultListModel());
-        jLabel1.setText("<html><h1>KerbalStuff ModManager</h1><br>by yenon</html>");
+        LModDescription.setText("<html><h1>KerbalStuff ModManager</h1><br>by yenon</html>");
         ks = new KerbalStuff(this, ignoreCertificate);
-        ks.searchMod(jTextField1.getText());
-    }//GEN-LAST:event_jButton1ActionPerformed
+        ks.searchMod(TFSearch.getText());
+    }//GEN-LAST:event_BSearchActionPerformed
 
     private void jList1MouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jList1MouseReleased
         int index = jList1.getSelectedIndex();
         if (index != -1) {
             displayModInfo(ks.getMod(index));
-            jButton3.setEnabled(new File(appDir + "/mods/" + ks.getMod(index).getName() + ".cfg").isFile());
+            BDelete.setEnabled(new File(appDir + "/modscfg/" + ks.getMod(index).getName() + ".cfg").isFile());
         }
     }//GEN-LAST:event_jList1MouseReleased
 
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+    private void BDownloadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BDownloadActionPerformed
         int selMod = jList1.getSelectedIndex(), selVer = jList2.getSelectedIndex();
         if (selMod != -1 && selVer != -1) {
             try {
                 Properties modProps = new Properties();
                 Mod mv = ks.getMod(selMod);
-                if (new File(appDir + "/mods/" + mv.getName() + ".cfg").isFile()) {
-                    FileInputStream fis = new FileInputStream(new File(appDir + "/mods/" + mv.getName() + ".cfg"));
+                if (new File(appDir + "/modscfg/" + mv.getName() + ".cfg").isFile()) {
+                    FileInputStream fis = new FileInputStream(new File(appDir + "/modscfg/" + mv.getName() + ".cfg"));
                     modProps.load(fis);
                     fis.close();
                 }
                 modProps.setProperty("id", String.valueOf(mv.getID()));
                 modProps.setProperty("version", mv.getMv()[selVer].getFriendlyVersion());
-                FileOutputStream fos = new FileOutputStream(new File(appDir + "/mods/" + mv.getName() + ".cfg"));
+                FileOutputStream fos = new FileOutputStream(new File(appDir + "/modscfg/" + mv.getName() + ".cfg"));
                 modProps.store(fos, null);
                 fos.close();
                 frameDownload = new FrameLoading();
@@ -310,7 +337,7 @@ public class MainFrame extends javax.swing.JFrame {
                 Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
-    }//GEN-LAST:event_jButton2ActionPerformed
+    }//GEN-LAST:event_BDownloadActionPerformed
 
     private void startup(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_startup
         loadConfig();
@@ -320,58 +347,75 @@ public class MainFrame extends javax.swing.JFrame {
         if (!new File(appDir + "/mods/").isDirectory()) {
             new File(appDir + "/mods/").mkdirs();
         }
+        if (!new File(appDir + "/modscfg/").isDirectory()) {
+            new File(appDir + "/modscfg/").mkdirs();
+        }
     }//GEN-LAST:event_startup
 
-    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+    private void BDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BDeleteActionPerformed
         int index = jList1.getSelectedIndex();
         if (index != -1) {
-            jButton3.setEnabled(false);
+            BDelete.setEnabled(false);
             Properties modProps = new Properties();
             Mod mv = ks.getMod(index);
-            if (new File(appDir + "/mods/" + mv.getName() + ".cfg").isFile()) {
+            if (new File(appDir + "/modscfg/" + mv.getName() + ".cfg").isFile()) {
                 try {
-                    FileInputStream fis = new FileInputStream(new File(appDir + "/mods/" + mv.getName() + ".cfg"));
+                    FileInputStream fis = new FileInputStream(new File(appDir + "/modscfg/" + mv.getName() + ".cfg"));
                     modProps.load(fis);
                     fis.close();
-                    String[] delDirs = modProps.getProperty("dirs").split("\n");
-                    int i = 0, j;
-                    while (i < delDirs.length) {
-                        File[] files = new File(delDirs[i]).listFiles();
-                        if (files != null) {
-                            j = 0;
-                            while (j < files.length) {
-                                if (files[j].isFile()) {
-                                    files[j].delete();
+                    if (modProps.containsKey("dirs")) {
+                        String[] delDirs = modProps.getProperty("dirs").split("\n");
+                        int i = 0, j;
+                        while (i < delDirs.length) {
+                            File[] files = new File(delDirs[i]).listFiles();
+                            if (files != null) {
+                                j = 0;
+                                while (j < files.length) {
+                                    if (files[j].isFile()) {
+                                        files[j].delete();
+                                    }
+                                    j++;
                                 }
-                                j++;
                             }
+                            i++;
                         }
-                        i++;
+                        i = 0;
+                        while (i < delDirs.length) {
+                            new File(delDirs[i]).delete();
+                            i++;
+                        }
+                        modProps.clear();
                     }
-                    i = 0;
-                    while (i < delDirs.length) {
-                        new File(delDirs[i]).delete();
-                        i++;
-                    }
-                    modProps.clear();
-                    new File(appDir + "/mods/" + mv.getName() + ".cfg").delete();
+                    new File(appDir + "/modscfg/" + mv.getName() + ".cfg").delete();
                 } catch (IOException ex) {
                     Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
         }
-    }//GEN-LAST:event_jButton3ActionPerformed
+    }//GEN-LAST:event_BDeleteActionPerformed
 
-    private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
+    private void ItemSetKSPDirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ItemSetKSPDirActionPerformed
         setKSPDir();
-    }//GEN-LAST:event_jMenuItem1ActionPerformed
+    }//GEN-LAST:event_ItemSetKSPDirActionPerformed
 
-    private void jCheckBoxMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBoxMenuItem1ActionPerformed
+    private void ItemIgnoreCerticicateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ItemIgnoreCerticicateActionPerformed
         ignoreCertificate = !ignoreCertificate;
-        jCheckBoxMenuItem1.setSelected(ignoreCertificate);
+        ItemIgnoreCerticicate.setSelected(ignoreCertificate);
         p.setProperty("ignore_certificate", String.valueOf(ignoreCertificate));
         saveConfig();
-    }//GEN-LAST:event_jCheckBoxMenuItem1ActionPerformed
+    }//GEN-LAST:event_ItemIgnoreCerticicateActionPerformed
+
+    private void ItemDevToolsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ItemDevToolsActionPerformed
+        MenuDevelopment.setVisible(ItemDevTools.isSelected());
+    }//GEN-LAST:event_ItemDevToolsActionPerformed
+
+    private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
+        System.out.println(Utilities.compareVersions(new String[]{"1.0.0.1", "1.0.0.0", "3.0", "2.0.8", "2.0.8.4"}));
+    }//GEN-LAST:event_jMenuItem1ActionPerformed
+
+    private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jMenuItem2ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -402,6 +446,7 @@ public class MainFrame extends javax.swing.JFrame {
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
+            @Override
             public void run() {
                 new MainFrame().setVisible(true);
             }
@@ -409,22 +454,25 @@ public class MainFrame extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
-    private javax.swing.JCheckBoxMenuItem jCheckBoxMenuItem1;
+    private javax.swing.JButton BDelete;
+    private javax.swing.JButton BDownload;
+    private javax.swing.JButton BSearch;
+    private javax.swing.JCheckBoxMenuItem ItemDevTools;
+    private javax.swing.JCheckBoxMenuItem ItemIgnoreCerticicate;
+    private javax.swing.JMenuItem ItemSetKSPDir;
+    private javax.swing.JLabel LModDescription;
+    private javax.swing.JMenu MenuDevelopment;
+    private javax.swing.JMenu MenuFile;
+    private javax.swing.JMenu MenuSettings;
+    private javax.swing.JTextField TFSearch;
     private javax.swing.JFileChooser jFileChooser1;
-    private javax.swing.JLabel jLabel1;
     private javax.swing.JList jList1;
     private javax.swing.JList jList2;
-    private javax.swing.JMenu jMenu1;
-    private javax.swing.JMenu jMenu3;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JOptionPane jOptionPane1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane3;
-    private javax.swing.JTextField jTextField1;
     // End of variables declaration//GEN-END:variables
 }

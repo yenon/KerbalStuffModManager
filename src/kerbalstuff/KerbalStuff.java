@@ -36,7 +36,6 @@ import jdk.nashorn.api.scripting.JSObject;
 public class KerbalStuff {
 
     private MainFrame mf;
-    private Mod modlist[];
 
     public KerbalStuff(MainFrame mf, boolean ignoreCertificate) {
         this.mf = mf;
@@ -95,12 +94,9 @@ public class KerbalStuff {
         return null;
     }
 
-    public Mod getMod(int id) {
-        return modlist[id];
-    }
-
-    public void searchMod(String mod) {
+    public Mod[] searchMod(String mod) {
         try {
+            Mod modlist[];
             long starttimefetch = System.currentTimeMillis();
             ScriptEngine se = new ScriptEngineManager().getEngineByName("JavaScript");
             ModVersion mv[];
@@ -147,10 +143,12 @@ public class KerbalStuff {
             }
             title=title+" parsing time: "+String.valueOf(System.currentTimeMillis() - starttimeparse)+" ms)";
             mf.setTitle(title);
+            return modlist;
         } catch (UnsupportedEncodingException ex) {
             Logger.getLogger(KerbalStuff.class.getName()).log(Level.SEVERE, null, ex);
         } catch (ScriptException ex) {
             Logger.getLogger(KerbalStuff.class.getName()).log(Level.SEVERE, null, ex);
         }
+        return null;
     }
 }

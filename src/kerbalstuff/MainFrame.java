@@ -208,12 +208,13 @@ public class MainFrame extends javax.swing.JFrame {
     private String appDir, appHome = System.getProperty("user.home") + "/yenon/KerbalStuff", kspDir;
     Properties p;
     boolean ignoreCertificate = false;
+    Mod m[] = new Mod[30];
 
     public void modDownloadFinished() {
         frameDownload.dispose();
         int index = jList1.getSelectedIndex();
         if (index != -1) {
-            BDelete.setEnabled(new File(appDir + "/modscfg/" + ks.getMod(index).getName() + ".cfg").isFile());
+            BDelete.setEnabled(new File(appDir + "/modscfg/" + m[index].getName() + ".cfg").isFile());
         }
     }
 
@@ -299,14 +300,14 @@ public class MainFrame extends javax.swing.JFrame {
         jList2.setModel(new DefaultListModel());
         LModDescription.setText("<html><h1>KerbalStuff ModManager</h1><br>by yenon</html>");
         ks = new KerbalStuff(this, ignoreCertificate);
-        ks.searchMod(TFSearch.getText());
+        m=ks.searchMod(TFSearch.getText());
     }//GEN-LAST:event_BSearchActionPerformed
 
     private void jList1MouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jList1MouseReleased
         int index = jList1.getSelectedIndex();
         if (index != -1) {
-            displayModInfo(ks.getMod(index));
-            BDelete.setEnabled(new File(appDir + "/modscfg/" + ks.getMod(index).getName() + ".cfg").isFile());
+            displayModInfo(m[index]);
+            BDelete.setEnabled(new File(appDir + "/modscfg/" + m[index].getName() + ".cfg").isFile());
         }
     }//GEN-LAST:event_jList1MouseReleased
 
@@ -315,7 +316,7 @@ public class MainFrame extends javax.swing.JFrame {
         if (selMod != -1 && selVer != -1) {
             try {
                 Properties modProps = new Properties();
-                Mod mv = ks.getMod(selMod);
+                Mod mv = m[selMod];
                 if (new File(appDir + "/modscfg/" + mv.getName() + ".cfg").isFile()) {
                     FileInputStream fis = new FileInputStream(new File(appDir + "/modscfg/" + mv.getName() + ".cfg"));
                     modProps.load(fis);
@@ -329,7 +330,7 @@ public class MainFrame extends javax.swing.JFrame {
                 frameDownload = new FrameLoading();
                 frameDownload.main(new String[0]);
                 frameDownload.setVisible(true);
-                ThreadDownloadMod tdm = new ThreadDownloadMod(this, frameDownload, ks.getMod(selMod).getMv()[selVer], appDir, kspDir, true);
+                ThreadDownloadMod tdm = new ThreadDownloadMod(this, frameDownload, m[selMod].getMv()[selVer], appDir, kspDir, true);
                 tdm.start();
             } catch (FileNotFoundException ex) {
                 Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
@@ -357,7 +358,7 @@ public class MainFrame extends javax.swing.JFrame {
         if (index != -1) {
             BDelete.setEnabled(false);
             Properties modProps = new Properties();
-            Mod mv = ks.getMod(index);
+            Mod mv = m[index];
             if (new File(appDir + "/modscfg/" + mv.getName() + ".cfg").isFile()) {
                 try {
                     FileInputStream fis = new FileInputStream(new File(appDir + "/modscfg/" + mv.getName() + ".cfg"));

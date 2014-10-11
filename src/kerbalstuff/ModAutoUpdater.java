@@ -31,7 +31,7 @@ public class ModAutoUpdater extends Thread{
             Properties p = new Properties();
             try {
                 p.load(new FileInputStream(files[i].getAbsoluteFile()));
-                p.getProperty("id")
+                p.getProperty("id");
             } catch (IOException ex) {
                 Logger.getLogger(ModAutoUpdater.class.getName()).log(Level.SEVERE, null, ex);
             }

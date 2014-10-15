@@ -13,19 +13,10 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.security.KeyManagementException;
-import java.security.NoSuchAlgorithmException;
-import java.security.cert.X509Certificate;
 import java.util.Properties;
 import java.util.Stack;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.net.ssl.HostnameVerifier;
-import javax.net.ssl.HttpsURLConnection;
-import javax.net.ssl.SSLContext;
-import javax.net.ssl.SSLSession;
-import javax.net.ssl.TrustManager;
-import javax.net.ssl.X509TrustManager;
 
 /**
  *
@@ -33,11 +24,11 @@ import javax.net.ssl.X509TrustManager;
  */
 public class ThreadDownloadMod extends Thread {
 
-    private MainFrame mf;
-    private ModVersion mv;
-    private FrameLoading fdm;
-    private String appDir, kspDir;
-    private boolean end;
+    private final MainFrame mf;
+    private final ModVersion mv;
+    private final FrameLoading fdm;
+    private final String appDir, kspDir;
+    private final boolean end;
 
     public void unpackingFinished(Stack<String> dirs) {
         if (end) {
@@ -50,7 +41,7 @@ public class ThreadDownloadMod extends Thread {
                 }
                 String dirOut = "";
                 while (!dirs.empty()) {
-                    if (dirOut == "") {
+                    if ("".equals(dirOut)) {
                         dirOut = dirs.pop();
                     } else {
                         dirOut = dirOut + "\n" + dirs.pop();
@@ -83,45 +74,14 @@ public class ThreadDownloadMod extends Thread {
         return mv;
     }
 
-    public ThreadDownloadMod(MainFrame mf, FrameLoading fdm, ModVersion mv, String appDir, String kspDir, boolean end) {
+    public ThreadDownloadMod(MainFrame mf, FrameLoading fdm, ModVersion mv,boolean end) {
         this.mf = mf;
         this.mv = mv;
-        this.appDir = appDir;
-        this.kspDir = kspDir;
+        this.appDir = mf.getAppDir();
+        this.kspDir = mf.getKspDir();
         this.fdm = fdm;
         this.end = end;
         this.fdm.setDownloadText("Downloading: " + mv.getName() + " " + mv.getFriendlyVersion());
-        HostnameVerifier allHostsValid = new HostnameVerifier() {
-            @Override
-            public boolean verify(String hostname, SSLSession session) {
-                return true;
-            }
-        };
-        TrustManager[] trustAllCerts = new TrustManager[]{new X509TrustManager() {
-            @Override
-            public java.security.cert.X509Certificate[] getAcceptedIssuers() {
-                return null;
-            }
-
-            @Override
-            public void checkClientTrusted(X509Certificate[] certs, String authType) {
-            }
-
-            @Override
-            public void checkServerTrusted(X509Certificate[] certs, String authType) {
-            }
-        }
-        };
-        try {
-            SSLContext sc = SSLContext.getInstance("SSL");
-            sc.init(null, trustAllCerts, new java.security.SecureRandom());
-            HttpsURLConnection.setDefaultSSLSocketFactory(sc.getSocketFactory());
-            HttpsURLConnection.setDefaultHostnameVerifier(allHostsValid);
-        } catch (KeyManagementException ex) {
-            Logger.getLogger(KerbalStuff.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (NoSuchAlgorithmException ex) {
-            Logger.getLogger(KerbalStuff.class.getName()).log(Level.SEVERE, null, ex);
-        }
     }
 
     @Override

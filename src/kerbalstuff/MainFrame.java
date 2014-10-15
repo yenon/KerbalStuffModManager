@@ -209,7 +209,14 @@ public class MainFrame extends javax.swing.JFrame {
     Properties p;
     boolean ignoreCertificate = false;
     Mod m[] = new Mod[30];
-
+    
+    public String getAppDir(){
+        return appDir;
+    }
+    public String getKspDir(){
+        return kspDir;
+    }
+    
     public void modDownloadFinished() {
         frameDownload.dispose();
         int index = jList1.getSelectedIndex();
@@ -299,8 +306,15 @@ public class MainFrame extends javax.swing.JFrame {
         jList1.setModel(new DefaultListModel());
         jList2.setModel(new DefaultListModel());
         LModDescription.setText("<html><h1>KerbalStuff ModManager</h1><br>by yenon</html>");
-        ks = new KerbalStuff(this, ignoreCertificate);
-        m=ks.searchMod(TFSearch.getText());
+        
+        m=KerbalStuff.searchMod(TFSearch.getText());
+        int i=0;
+        DefaultListModel dlm = new DefaultListModel();
+        while (i<m.length&&m[i]!=null){
+            dlm.addElement(m[i].getName());
+            i++;
+        }
+        jList1.setModel(dlm);
     }//GEN-LAST:event_BSearchActionPerformed
 
     private void jList1MouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jList1MouseReleased
@@ -330,7 +344,7 @@ public class MainFrame extends javax.swing.JFrame {
                 frameDownload = new FrameLoading();
                 frameDownload.main(new String[0]);
                 frameDownload.setVisible(true);
-                ThreadDownloadMod tdm = new ThreadDownloadMod(this, frameDownload, m[selMod].getMv()[selVer], appDir, kspDir, true);
+                ThreadDownloadMod tdm = new ThreadDownloadMod(this, frameDownload, m[selMod].getMv()[selVer], true);
                 tdm.start();
             } catch (FileNotFoundException ex) {
                 Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);

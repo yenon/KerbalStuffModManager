@@ -31,7 +31,10 @@ public class ModAutoUpdater extends Thread{
             Properties p = new Properties();
             try {
                 p.load(new FileInputStream(files[i].getAbsoluteFile()));
-                p.getProperty("id");
+                Mod m = KerbalStuff.findModById(Integer.parseInt(p.getProperty("id")));
+                if(Utilities.compareVersions(new String[]{m.getMv()[0].getFriendlyVersion(),p.getProperty("")})==0){
+                    
+                }
             } catch (IOException ex) {
                 Logger.getLogger(ModAutoUpdater.class.getName()).log(Level.SEVERE, null, ex);
             }
